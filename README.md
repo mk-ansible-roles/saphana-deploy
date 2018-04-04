@@ -16,10 +16,13 @@ Role Variables
 
 This role uses the same variables as the saphana-preconfigure role.  It expects the installation  directory to be available at `hana_installdir`.
 
-The following variables need to be set in the host_vars file. See [Best Practises](http://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html?highlight=host_var#group-and-host-variables) for more details.
+The following variables need to be set in the host_vars file. See [Best Practises](http://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html?highlight=host_var#group-and-host-variables) for more details on how to use host_vars and group_vars.
 
-Example host_vars file
-----------------------
+The dictionary instances describe the parameters of the instances. You can define more than one instance for multiple hana instances on one system.
+The variables you define here are used for the unattended installation.
+
+### Example host_vars file for server "node1"
+
      ---
      deployment_instance: true
 
@@ -31,7 +34,7 @@ Example host_vars file
            hana_components: "client,server"
            hana_system_type: "Master"
            id_group_shm: "30220"
-           hana_instance_hostname: vm31
+           hana_instance_hostname: node1
            hana_addhosts:
            hana_sid: L01
            hana_instance_number: 10
@@ -55,6 +58,10 @@ Here is an example playbook that installs a complete server
               repositories:
                       - rhel-7-server-rpms
                       - rhel-sap-hana-for-rhel-7-server-rpms
+
+              # If you want to use 4 years update services, use:
+              #       - rhel-7-server-e4s-rpms
+              #       - rhel-sap-hana-for-rhel-7-server-e4s-rpms
 
               # disk-init role variables
               disks:
