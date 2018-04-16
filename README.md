@@ -21,9 +21,14 @@ The following variables need to be set in the host_vars file. See [Best Practise
 The dictionary instances describe the parameters of the instances. You can define more than one instance for multiple hana instances on one system.
 The variables you define here are used for the unattended installation.
 
+hostname is used for the instance, saphostagent uses for communication
+
+set deployment_instance to true if you want to execute the actual installation. In scale-out scenarios only one host should have set this to true
+
 ### Example host_vars file for server "node1"
 
      ---
+     hostname: "{{ ansible_hostname }}"
      deployment_instance: true
 
      instances:
@@ -116,7 +121,7 @@ Here is an example playbook that installs a complete server
               - { role: mk-ansible-roles.disk-init }
               - { role: linux-system-roles.timesync }
               - { role: mk-ansible-roles.saphana-preconfigure }
-              - { role: mk-ansible-roles.saphana-deployment }
+              - { role: mk-ansible-roles.saphana-deploy }
               - { role: mk-ansible-roles.saphana-hsr }
 
 License
