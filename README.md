@@ -19,7 +19,14 @@ This role uses the same variables as the saphana-preconfigure role.  It expects 
 The following variables need to be set in the host_vars file. See [Best Practises](http://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html?highlight=host_var#group-and-host-variables) for more details on how to use host_vars and group_vars.
 
 The dictionary instances describe the parameters of the instances. You can define more than one instance for multiple hana instances on one system.
-The variables you define here are used for the unattended installation.
+The variables you define here are used for the unattended installation with hdblcm. The variables are the same as in the config file and prefixed with `hana_`.
+You can also set `hdblcm_params` to pass additional parameters to the hdblcm command, such as:
+
+      hdblcm_params: "--ignore=<check1>[,<check2>]..."
+
+ignoring failing prerequisite checks can sometimes be important in testinstallations with low memory or officially unsupported CPUs. The following checks can be ignored:  check_component_dependencies, check_diskspace,
+                                                 check_min_mem, check_platform, check_signature_file, verify_signature)
+
 
 hostname is used for the instance, saphostagent uses for communication
 
@@ -44,6 +51,7 @@ set deployment_instance to true if you want to execute the actual installation. 
            hana_sid: L01
            hana_instance_number: 10
            hana_system_usage: custom
+           hdblcm_params: "--ignore=check_platform"
 
 
 Example Playbook
