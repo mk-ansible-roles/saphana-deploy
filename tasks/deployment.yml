@@ -1,5 +1,11 @@
 ---
 
+# TODO:
+# cleanup variables (move hostname to sap_hostname which is already changed in preconfigure)
+# use saphostctrl to check if an SID or Instance Number is already configured on the system ! Must be unique
+# move pathnames to /vars/main.yml e.g. sap_hana_deploy_usr_sap, hana_shared, hana_log, hana_data ...
+# move inline documentation to README
+ 
 - name: Create File for Scale-Out Enviornments
   template:
     src: deployment_install_hana_SID.conf.j2
@@ -54,18 +60,26 @@
 # 20170513 Thomas Bludau
 # Very complicated part. Could be different on every enviornment.
 
+#
+# TODO: Is this required by HANA 1?
+
 #- name: copy global.ini
 #  copy: src=global.ini dest=/hana/shared/{{ item.value.hana_sid|upper }}/global.ini
 #  with_dict: "{{ instances }}"
 
 # Only Start when:
 # Hostname Resolution is fine!
+# --> Shall we double check?
 # Instance-Hostname is existing and configured
 # Updates are Installed
 # System rebooted (Problems otherwise, while f.e. mounting nfs)
+# --> Check with needs-restarting !!
 # Systems already configured (preconfigure)
+# --> We can set a dependancy in meta, so that preconfigure is ALWAYS run
 # Every System in the Scale-Out Enviornment is ready
+# --> ansible wait on sync with port
 # Only Execute on One System in Scale-Out Enviornment
+# --> can be achived run_once I guess
 
 - name: execute unattended installation (logfile /var/log/hana_install.log )
   shell: ./hdblcm --configfile=/tmp/hana_install_{{ item.value.hana_sid|lower}}.cfg -b --remote_execution=saphostagent {{ item.value.hdblcm_params| default('') }} >> /var/log/hana_install_{{ item.value.hana_sid|lower}}.log
