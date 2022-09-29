@@ -1,6 +1,8 @@
 saphana-deploy
 ==============
 
+# THIS ROLE IS DEPRECATED AND WILL BE DELETED IN 12.2022<BR>use _community.sap_install_ collection instead
+
 This role deploys SAP HANA 1.0 SPS 12 and above (HANA2) on a properly configured  RHEL 6.7 or 7.x system.
 
 Requirements
